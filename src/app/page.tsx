@@ -28,8 +28,8 @@ const HIGHLIGHTS = [
   },
   {
     icon: Video,
-    title: "Faculty video lectures",
-    desc: "Topic-wise videos with chapter markers and downloadable slide decks.",
+    title: "NCERT video lectures",
+    desc: "Chapter-wise lectures streamed straight from the NCERT Official and faculty YouTube channels — nothing hosted, nothing to download.",
   },
   {
     icon: Users,

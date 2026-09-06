@@ -16,7 +16,7 @@
 
 ## 📖 1. Overview & Vision
 
-**Pragyan** is a lightweight, accessible digital learning and assessment portal aligned with the official **NCERT curriculum** for **Class 7 and Class 8**. Designed specifically for the Indian public school ecosystem, it bridges the gap between students and educators through faculty-verified video lectures, peer-reviewed community notes, previous years' question (PYQ) assessments, and a real-time gamified peer-benchmarking engine.
+**Pragyan** is a lightweight, accessible digital learning and assessment portal aligned with the official **NCERT curriculum** for **Class 7 and Class 8**. Designed specifically for the Indian public school ecosystem, it bridges the gap between students and educators through YouTube-sourced NCERT video lectures, peer-reviewed community notes, previous years' question (PYQ) assessments, and a real-time gamified peer-benchmarking engine.
 
 Built strictly according to the **National Portal of India Design Guidelines (NIC)**, Pragyan features a clean Indian Government aesthetic (Deep Blue `#133b5c`, Saffron `#d97706`/`#f59e0b`, High-Contrast Typography, and an Ashoka Chakra emblem).
 
@@ -26,7 +26,7 @@ Built strictly according to the **National Portal of India Design Guidelines (NI
 
 ### 📶 Low-Bandwidth Adaptive Mode (Data Saver)
 - **Problem:** Students in rural and government schools frequently face unstable 2G/3G connectivity.
-- **Solution:** A one-click **Data Saver Toggle** in the header that suppresses heavy video auto-loading, reduces layout animations, and serves instant compressed/cached notes and text first.
+- **Solution:** A one-click **Data Saver Toggle** in the header that suppresses video thumbnails and heavy embeds, reduces layout animations, and serves instant compressed/cached notes and text first.
 
 ### 🏷️ DIKSHA & NCERT Learning Outcome Schema
 - Every chapter is directly mapped to standard national education metadata:
@@ -37,7 +37,10 @@ Built strictly according to the **National Portal of India Design Guidelines (NI
 ### 👥 Dual Sub-Portal Chapter Architecture
 Each NCERT chapter is partitioned into two distinct sub-portals:
 1. **Learning Sub-Portal**:
-   - **Faculty Video Lectures:** Embedded HTML5/YouTube video player with timestamped chapter markers and downloadable slide decks (`.md`/PDF).
+   - **Video Lectures (YouTube-sourced):** Pragyan stores **no video files**. Selecting a chapter runs a scoped YouTube search and streams the lecture in-page from one of two channels:
+     - **NCERT Official** — <https://www.youtube.com/@NCERTOFFICIAL/courses> (all classes/subjects)
+     - **Faculty channel** — the institute's own NPTEL-style channel (configurable)
+     Configure with `YOUTUBE_API_KEY` (server-only), plus optional `NEXT_PUBLIC_FACULTY_YT_HANDLE`, `NEXT_PUBLIC_FACULTY_YT_NAME`, `NCERT_YT_CHANNEL_ID`, `FACULTY_YT_CHANNEL_ID`. Without a key the portal still deep-links into the channel's own search.
    - **Crowdsourced Notes & Upvoting:** Students and faculty upload notes in text/PDF/Image formats.
    - **Dynamic Ranking Algorithm:** Notes are sorted real-time based on the formula:
      $$\text{Ranking Score} = \text{Upvotes} \times 0.7 + (\text{Faculty Verified Badge} \times 30)$$
@@ -147,7 +150,7 @@ SIH-2026---Sample-1/
 │   │   ├── notes-section.tsx               #    upvoting & faculty verification UI
 │   │   ├── objective-quiz.tsx              #    timed 20-MCQ PYQ assessment engine
 │   │   ├── subjective-practice.tsx         #    15-question rubric reveal engine
-│   │   ├── video-player.tsx                #    lecture player with chapter markers
+│   │   ├── chapter-videos.tsx              #    YouTube channel tabs + embedded player
 │   │   └── ui.tsx                          #    reusable cards, wordmarks, progress bars
 │   ├── server/                             # 🖥️ BACKEND — server-only modules (never reach the browser)
 │   │   ├── auth/                           #    HMAC-signed cookie sessions · scrypt hashing
@@ -168,7 +171,7 @@ SIH-2026---Sample-1/
 │   ├── seed.ts                             #    database seeding script
 │   └── seed-content.ts                     #    curated NCERT questions, MCQs, and rubrics
 ├── drizzle/                                # 🖥️ BACKEND — SQL migration files & snapshots
-├── public/                                 # 🎨 FRONTEND — static assets (videos, slide decks)
+├── public/                                 # 🎨 FRONTEND — static assets (slide decks)
 ├── drizzle.config.json                     # 🖥️ BACKEND — Drizzle Kit config (points at src/server/db/schema.ts)
 ├── next.config.ts · tsconfig.json · eslint.config.mjs · postcss.config.mjs
 └── package.json · README.md

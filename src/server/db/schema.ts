@@ -2,7 +2,6 @@ import {
   sqliteTable,
   integer,
   text,
-  real,
   index,
   uniqueIndex,
 } from "drizzle-orm/sqlite-core";
@@ -67,34 +66,6 @@ export const chapters = sqliteTable(
     ),
     index("chapters_lookup").on(t.classNo, t.subjectSlug),
   ],
-);
-
-export const videos = sqliteTable(
-  "videos",
-  {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    chapterId: integer("chapter_id").notNull().references(() => chapters.id, {
-      onDelete: "cascade",
-    }),
-    title: text("title").notNull(),
-    kind: text("kind", { enum: ["mp4", "youtube"] }).notNull().default("mp4"),
-    videoUrl: text("video_url").notNull(),
-    durationSec: integer("duration_sec").notNull().default(0),
-    fileSizeMb: real("file_size_mb"),
-    /** [{t: 0, label: "..."}] */
-    markers: text("markers", { mode: "json" })
-      .$type<{ t: number; label: string }[]>()
-      .notNull()
-      .default([]),
-    slidesUrl: text("slides_url"),
-    slidesTitle: text("slides_title"),
-    uploadedById: integer("uploaded_by_id"),
-    uploadedByName: text("uploaded_by_name"),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .$defaultFn(() => new Date()),
-  },
-  (t) => [index("videos_chapter").on(t.chapterId)],
 );
 
 export const notes = sqliteTable(
