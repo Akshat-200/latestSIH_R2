@@ -1,7 +1,6 @@
 ﻿import { db } from "@/server/db";
 import {
   chapters,
-  videos,
   notes,
   noteVotes,
   mcqQuestions,
@@ -24,7 +23,6 @@ export type ChapterSummary = {
   summary: string | null;
   outcomeIds: string[];
   dikshaCode: string | null;
-  videoCount: number;
   noteCount: number;
   mcqCount: number;
   pyqPct: number;
@@ -58,11 +56,6 @@ export async function getChapterList(
 
   const counts = await Promise.all([
     db
-      .select({ chapterId: videos.chapterId, n: sql<number>`count(*)` })
-      .from(videos)
-      .where(inArray(videos.chapterId, ids))
-      .groupBy(videos.chapterId),
-    db
       .select({ chapterId: notes.chapterId, n: sql<number>`count(*)` })
       .from(notes)
       .where(inArray(notes.chapterId, ids))
@@ -94,13 +87,12 @@ export async function getChapterList(
       : Promise.resolve([]),
   ]);
 
-  const [vidMap, noteMap, mcqMap, subjMap, bestMap] = [
+  const [noteMap, mcqMap, subjMap, bestMap] = [
     Object.fromEntries(counts[0].map((r: { chapterId: number; n: number }) => [r.chapterId, r.n])),
-    Object.fromEntries(counts[1].map((r: { chapterId: number; n: number }) => [r.chapterId, r.n])),
-    Object.fromEntries(counts[2].map((r: { chapterId: number; n: number; pyq: number }) => [r.chapterId, r])),
-    Object.fromEntries(counts[3].map((r: { chapterId: number; n: number }) => [r.chapterId, r.n])),
+    Object.fromEntries(counts[1].map((r: { chapterId: number; n: number; pyq: number }) => [r.chapterId, r])),
+    Object.fromEntries(counts[2].map((r: { chapterId: number; n: number }) => [r.chapterId, r.n])),
     Object.fromEntries(
-      (counts[4] as { chapterId: number; best: number | null; total: number | null }[]).map(
+      (counts[3] as { chapterId: number; best: number | null; total: number | null }[]).map(
         (r) => [r.chapterId, r],
       ),
     ),
@@ -116,7 +108,6 @@ export async function getChapterList(
       summary: c.summary,
       outcomeIds: c.outcomeIds ?? [],
       dikshaCode: c.dikshaCode,
-      videoCount: vidMap[c.id] ?? 0,
       noteCount: noteMap[c.id] ?? 0,
       mcqCount: mcq?.n ?? 0,
       pyqPct: mcq && mcq.n > 0 ? Math.round(((Number(mcq.pyq) || 0) / mcq.n) * 100) : 0,
@@ -385,12 +376,11 @@ export async function getChapter(
 }
 
 export async function getContentForChapter(chapterId: number) {
-  const [vList, mList, sList] = await Promise.all([
-    db.select().from(videos).where(eq(videos.chapterId, chapterId)),
+  const [mList, sList] = await Promise.all([
     db.select().from(mcqQuestions).where(eq(mcqQuestions.chapterId, chapterId)),
     db.select().from(subjectiveQuestions).where(eq(subjectiveQuestions.chapterId, chapterId)),
   ]);
-  return { videos: vList, mcqs: mList, subj: sList };
+  return { mcqs: mList, subj: sList };
 }
 
 export async function getBestAttempt(a: number | null, b: number | null) {

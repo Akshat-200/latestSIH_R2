@@ -78,7 +78,7 @@ export const TRANSLATIONS = {
   tab_subjective: { en: "3 · Subjective (2/3/5M)", hi: "3 · वर्णनात्मक अभ्यास (2/3/5 अंक)", te: "3 · సబ్జెక్టివ్ ప్రాక్టీస్ (2/3/5M)", ta: "3 · விளக்கமுறை பயிற்சி (2/3/5M)" },
 
   // Video & Notes
-  faculty_videos: { en: "Faculty Video Lectures", hi: "फैकल्टी वीडियो व्याख्यान", te: "ఫ్యాకల్టీ వీడియో పాఠాలు", ta: "ஆசிரியர் வீடியோ விரிவுரைகள்" },
+  faculty_videos: { en: "Video Lectures · YouTube", hi: "वीडियो व्याख्यान · यूट्यूब", te: "వీడియో పాఠాలు · యూట్యూబ్", ta: "வீடியோ விரிவுரைகள் · யூடியூப்" },
   community_notes: { en: "Community Notes & Handouts", hi: "सामुदायिक नोट्स व हैंडआउट्स", te: "కమ్యూనిటీ నోట్స్ & హ్యాండ్‌அவுట్‌లు", ta: "சமூக குறிப்புகள் & கையேடுகள்" },
   contribute_notes: { en: "Contribute notes", hi: "नोट्स जोड़ें", te: "నోట్స్ జోడించండి", ta: "குறிப்புகளைச் சேர்க்கவும்" },
   faculty_verified: { en: "Faculty Verified", hi: "फैकल्टी सत्यापित", te: "ఫ్యాకల్టీ ధృవీకరించబడింది", ta: "ஆசிரியர் சரிபார்த்தது" },
