@@ -21,7 +21,6 @@ type ChapterItem = {
   title: string;
   slug: string;
   summary: string | null;
-  videoCount: number;
   noteCount: number;
   mcqCount: number;
   pyqPct: number;
@@ -116,7 +115,7 @@ export function SubjectIndexView({
             {g.items.map(({ row, data }) => {
               const href = data ? `/class/${classNo}/${subjectSlug}/${data.slug}` : `#`;
               const hasContent = data
-                ? data.videoCount > 0 || data.noteCount > 0 || data.mcqCount > 0 || data.subjCount > 0
+                ? data.noteCount > 0 || data.mcqCount > 0 || data.subjCount > 0
                 : false;
               return (
                 <Link
@@ -137,10 +136,10 @@ export function SubjectIndexView({
                         {row.title}
                       </h3>
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {data && data.videoCount > 0 && (
-                          <span className="inline-flex items-center gap-1 rounded-sm bg-navy-50 px-1.5 py-0.5 text-[11px] font-bold text-navy-600 dark:bg-slate-800 dark:text-slate-300">
-                            <Clapperboard className="h-3 w-3" /> {data.videoCount}{" "}
-                            {language === "hi" ? "वीडियो" : language === "te" ? "వీడియోలు" : language === "ta" ? "வீடியோக்கள்" : "videos"}
+                        {data && (
+                          <span className="inline-flex items-center gap-1 rounded-sm bg-red-50 px-1.5 py-0.5 text-[11px] font-bold text-red-600 dark:bg-slate-800 dark:text-red-300">
+                            <Clapperboard className="h-3 w-3" />{" "}
+                            {language === "hi" ? "यूट्यूब वीडियो" : language === "te" ? "యూట్యూబ్ వీడియోలు" : language === "ta" ? "யூடியூப் வீடியோக்கள்" : "YouTube lectures"}
                           </span>
                         )}
                         {data && data.noteCount > 0 && (

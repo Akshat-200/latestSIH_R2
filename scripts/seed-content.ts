@@ -13,16 +13,6 @@ export type SubjSeed = {
   answer: string;
 };
 
-export type VideoSeed = {
-  title: string;
-  url: string;
-  duration: number;
-  sizeMb: number;
-  markers: { t: number; label: string }[];
-  slides?: string;
-  slidesTitle?: string;
-};
-
 export type NoteSeed = {
   title: string;
   content: string;
@@ -30,8 +20,6 @@ export type NoteSeed = {
   verified?: boolean;
   votesFrom: string[]; // handles that upvote this note
 };
-
-const V = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
 
 /* ------------------------------------------------------------------ */
 /*  CLASS 8 · SCIENCE · CH 6 — COMBUSTION AND FLAME                   */
@@ -302,84 +290,6 @@ export const heatSubj: SubjSeed[] = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  VIDEOS                                                            */
-/* ------------------------------------------------------------------ */
-export const videosByChapter: Record<string, VideoSeed[]> = {
-  "8-science-6": [
-    {
-      title: "Combustion: Definition, Conditions & Types",
-      url: "/videos/combustion-definition.mp4",
-      duration: 603,
-      sizeMb: 96.4,
-      markers: [
-        { t: 0, label: "Introduction" },
-        { t: 55, label: "What is combustion?" },
-        { t: 150, label: "The fire triangle: fuel, air, heat" },
-        { t: 250, label: "Slow, rapid & spontaneous combustion" },
-        { t: 370, label: "Smouldering in the dark" },
-        { t: 490, label: "Quick recap & check" },
-      ],
-      slides: "/slides/combustion-intro.md",
-      slidesTitle: "Slides — Combustion Basics",
-    },
-    {
-      title: "Flame Zones: The Copper Wire Loop Experiment",
-      url: "/videos/flame-zones-experiment.mp4",
-      duration: 653,
-      sizeMb: 169.8,
-      markers: [
-        { t: 0, label: "Setting up the experiment" },
-        { t: 45, label: "Observing the three zones" },
-        { t: 130, label: "Copper wire loop in each zone" },
-        { t: 270, label: "Soot in the luminous zone" },
-        { t: 410, label: "Why the outer zone is blue" },
-        { t: 550, label: "Summary of observations" },
-      ],
-      slides: "/slides/flame-zones.md",
-      slidesTitle: "Slides — Flame Zones Lab",
-    },
-  ],
-  "8-mathematics-1": [
-    {
-      title: "Rational Numbers: Number Line & Standard Form",
-      url: "/videos/rational-numbers.mp4",
-      duration: 888,
-      sizeMb: 129.8,
-      markers: [
-        { t: 0, label: "What makes a number rational?" },
-        { t: 80, label: "p/q form and the q ≠ 0 rule" },
-        { t: 200, label: "Placing rationals on a number line" },
-        { t: 350, label: "Standard form worked examples" },
-        { t: 520, label: "Additive & multiplicative inverses" },
-        { t: 700, label: "Practice set" },
-      ],
-      slides: "/slides/rational-numbers.md",
-      slidesTitle: "Slides — Rational Numbers",
-    },
-  ],
-  "7-science-9": [
-    {
-      title: "Heat & Thermometer: Three Modes of Transfer",
-      url: `${V}/TearsOfSteel.mp4`,
-      duration: 734,
-      sizeMb: 178.2,
-      markers: [
-        { t: 0, label: "Measuring temperature" },
-        { t: 60, label: "Clinical vs laboratory thermometer" },
-        { t: 180, label: "Celsius–Fahrenheit conversion" },
-        { t: 320, label: "Conduction, convection, radiation" },
-        { t: 470, label: "Good and bad conductors" },
-        { t: 600, label: "Quick recap" },
-      ],
-      slides: "/slides/heat-transfer.md",
-      slidesTitle: "Slides — Heat & Temperature",
-    },
-  ],
-};
-
-/* ------------------------------------------------------------------ */
-/*  NOTES                                                             */
 /* ------------------------------------------------------------------ */
 export const notesByChapter: Record<string, NoteSeed[]> = {
   "8-science-6": [

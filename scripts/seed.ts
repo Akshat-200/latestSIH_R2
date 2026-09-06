@@ -17,7 +17,6 @@ import {
   rationalSubj,
   heatMcqs,
   heatSubj,
-  videosByChapter,
   notesByChapter,
   DEMO_PASSWORD,
 } from "./seed-content";
@@ -36,7 +35,6 @@ function resolveDbPath(): string {
 const {
   users,
   chapters,
-  videos,
   notes,
   noteVotes,
   mcqQuestions,
@@ -104,7 +102,7 @@ function resetTables(sq: SqlJsDatabase) {
   sq.run("PRAGMA foreign_keys = OFF;");
   const tables = [
     "note_votes", "mcq_attempts", "subjective_attempts", "xp_events",
-    "notes", "videos", "mcq_questions", "subjective_questions",
+    "notes", "mcq_questions", "subjective_questions",
     "chapters", "users",
   ];
   for (const t of tables) sq.run(`DELETE FROM "${t}";`);
@@ -217,26 +215,6 @@ export async function seedDemoData(existing?: {
             .all() as { id: number }[];
           chapterIds[key] = ch.id;
         }
-      }
-    }
-
-    for (const [key, list] of Object.entries(videosByChapter)) {
-      const chId = chapterIds[key];
-      if (!chId) continue;
-      for (const v of list) {
-        dbInst.insert(videos).values({
-          chapterId: chId,
-          title: v.title,
-          kind: "mp4",
-          videoUrl: v.url,
-          durationSec: v.duration,
-          fileSizeMb: v.sizeMb,
-          markers: v.markers,
-          slidesUrl: v.slides,
-          slidesTitle: v.slidesTitle,
-          uploadedById: userIds.ms_anita,
-          uploadedByName: "Ms. Anita Sharma (Faculty)",
-        }).run();
       }
     }
 
@@ -360,7 +338,6 @@ export async function seedDemoData(existing?: {
     console.log("Seed complete.");
     console.log(`  users:        ${DEMO_USERS.length}`);
     console.log(`  chapters:     ${Object.keys(chapterIds).length}`);
-    console.log(`  video sets:   ${Object.keys(videosByChapter).length}`);
     console.log(`  note sets:    ${Object.keys(notesByChapter).length}`);
     console.log(`  MCQ banks:    ${Object.entries(bankSize).map(([k, v]) => `${k}=${v}`).join(", ")}`);
     console.log(`  attempts:     ${Object.values(ATTEMPTS).reduce((a, b) => a + Object.keys(b).length, 0)} objective, ${SUBJECTIVE_DONE.length} subjective`);

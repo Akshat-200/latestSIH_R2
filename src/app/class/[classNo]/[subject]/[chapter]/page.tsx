@@ -3,11 +3,9 @@ import { notFound, redirect } from "next/navigation";
 import {
   ArrowLeft,
   BookOpen,
-  Clapperboard,
   FlaskConical,
   ListChecks,
   MapPinned,
-  MonitorPlay,
   NotebookPen,
   PenLine,
   ShieldCheck,
@@ -24,7 +22,7 @@ import {
   getChapterLeaderboard,
 } from "@/server/data/queries";
 import { EmptyState } from "@/components/ui";
-import { VideoPlayer } from "@/components/video-player";
+import { ChapterVideos } from "@/components/chapter-videos";
 import { NotesSection } from "@/components/notes-section";
 import { ObjectiveQuiz } from "@/components/objective-quiz";
 import { SubjectivePractice } from "@/components/subjective-practice";
@@ -54,7 +52,7 @@ export default async function ChapterPage({
   if (!ch) notFound();
 
   const staticRow = getChapters(cn, subject).find((_, i) => i + 1 === ch.num);
-  const { videos, mcqs, subj } = await getContentForChapter(ch.id);
+  const { mcqs, subj } = await getContentForChapter(ch.id);
   const notesList = await getRankedNotes(ch.id, user.id);
   const best = await getBestAttempt(user.id, ch.id);
   const top = (await getChapterLeaderboard(ch.id)).slice(0, 5);
@@ -102,10 +100,6 @@ export default async function ChapterPage({
           </div>
           <div className="hidden shrink-0 gap-2 text-right sm:flex">
             <div className="rounded-md border border-line bg-paper px-3 py-2">
-              <p className="text-[11px] font-bold uppercase text-slate-400">Videos</p>
-              <p className="text-lg font-extrabold text-navy-800">{videos.length}</p>
-            </div>
-            <div className="rounded-md border border-line bg-paper px-3 py-2">
               <p className="text-[11px] font-bold uppercase text-slate-400">Notes</p>
               <p className="text-lg font-extrabold text-navy-800">{notesList.length}</p>
             </div>
@@ -130,38 +124,11 @@ export default async function ChapterPage({
                 title={ch.title}
                 summary={typeof staticRow?.summary === "string" ? staticRow.summary : undefined}
               />
-              <section>
-                <h2 className="mb-3 flex items-center gap-2 text-lg font-extrabold text-navy-900">
-                  <MonitorPlay className="h-5 w-5 text-saffron-600" /> Faculty Video Lectures
-                </h2>
-                {videos.length === 0 ? (
-                  <EmptyState
-                    icon={Clapperboard}
-                    title="Lectures coming soon"
-                    text="Faculty are preparing topic-wise video lectures for this chapter. In the meantime, use the NCERT textbook and the notes below."
-                  />
-                ) : (
-                  <div className="space-y-4">
-                    {videos.map((v) => (
-                      <VideoPlayer
-                        key={v.id}
-                        video={{
-                          id: v.id,
-                          title: v.title,
-                          kind: v.kind,
-                          videoUrl: v.videoUrl,
-                          durationSec: v.durationSec,
-                          fileSizeMb: v.fileSizeMb,
-                          markers: v.markers ?? [],
-                          slidesUrl: v.slidesUrl,
-                          slidesTitle: v.slidesTitle,
-                          uploadedByName: v.uploadedByName,
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </section>
+              <ChapterVideos
+                classNo={cn}
+                subject={subjectName(subject)}
+                chapterTitle={ch.title}
+              />
 
               <section>
                 <h2 className="mb-3 flex items-center gap-2 text-lg font-extrabold text-navy-900">
